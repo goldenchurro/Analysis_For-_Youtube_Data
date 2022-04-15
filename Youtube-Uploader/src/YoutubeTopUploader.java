@@ -18,5 +18,14 @@ public class Youtubetopuploader {
      private final static IntWritable occurance = new InWritable(1);
      publlic void map(LongWritable key, Text value,
                       Context context) throws IOException, InterruptedException {
+        
+public static class Reduce extends Reducer<Text,IntWritable,Text,IntWritable> 
+{
+   
+   public void reduce()
+      
+   }
+        
+ public static void main()
        
      
