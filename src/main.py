@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, avg
+import pyspark
+import pandas as pd
+
+# http://netsg.cs.sfu.ca/youtubedata/
+
+def main():
+    pySparkSes = SparkSession.builder.getOrCreate()
+
+    yt0518_0 = pySparkSes.read.csv("src/0518/0.txt", sep = "\t")
+    #yt0518_1 = pySparkSes.read.csv("src/0518/1.txt", sep = "\t")
+    #yt0518_2 = pySparkSes.read.csv("src/0518/2.txt", sep = "\t")
+    #yt0518_3 = pySparkSes.read.csv("src/0518/3.txt", sep = "\t")
+
+    yt0518_0 = yt0518_0.withColumnRenamed('_c0', "ID").withColumnRenamed('_c1', "Uploader")
+    yt0518_0 = yt0518_0.withColumnRenamed('_c2', "Age").withColumnRenamed('_c3', "Category")
+    yt0518_0 = yt0518_0.withColumnRenamed('_c4', "Length").withColumnRenamed('_c5', "Views")
+    yt0518_0 = yt0518_0.withColumnRenamed('_c6', "Rate").withColumnRenamed('_c7', "Ratings")
+    yt0518_0 = yt0518_0.withColumnRenamed('_c8', "Comments").withColumnRenamed('_c9', "Related")
+
+
+    graph0518 = yt0518_0.select('Category', 'Views', 'Rate', 'Ratings', 'Comments')
+
+    graph0518 = graph0518.groupBy('Category').agg('Views').agg('Rate').agg('Ratings').agg('Comments')
+
+    graph0518.show()
+
+if __name__ == "__main__":
+    main()
