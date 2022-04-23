@@ -20,13 +20,14 @@ def main():
     yt0518_0 = yt0518_0.withColumnRenamed('_c4', "Length").withColumnRenamed('_c5', "Views")
     yt0518_0 = yt0518_0.withColumnRenamed('_c6', "Rate").withColumnRenamed('_c7', "Ratings")
     yt0518_0 = yt0518_0.withColumnRenamed('_c8', "Comments").withColumnRenamed('_c9', "Related")
+    yt0518_0 = yt0518_0.drop(*[str(x) for x in yt0518_0.columns[9:-1]])
 
 
     graph0518 = yt0518_0.select('Category', 'Views', 'Rate', 'Ratings', 'Comments')
 
-    graph0518 = graph0518.groupBy('Category').agg('Views').agg('Rate').agg('Ratings').agg('Comments')
+    #graph0518 = graph0518.groupBy('Category')#.agg('Views').agg('Rate').agg('Ratings').agg('Comments')
 
-    graph0518.show()
+    graph0518.show(10)
 
 if __name__ == "__main__":
     main()
