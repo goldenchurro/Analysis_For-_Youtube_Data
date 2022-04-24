@@ -8,6 +8,12 @@ import pandas as pd
 
 # http://netsg.cs.sfu.ca/youtubedata/
 
+# Count videos in categories
+# Determine average viewership based on categories
+# Determine top ~twenty videos based on view {and frequency of categories in this list}
+# Determine bottom ~twenty videos based on view {and frequency of categories in this list}
+# Compare previous two
+
 def main():
     pySparkSes = SparkSession.builder.getOrCreate()
 
@@ -46,14 +52,48 @@ def main():
 
     ytUnion = yt0518_0.union(yt0518_1).union(yt0518_2).union(yt0518_3)
 
-    graph0518 = ytUnion.select('Category', 'Views', 'Rate', 'Ratings', 'Comments')
+    ############################################
+    # Graph of relevant data averages
+    ############################################
 
-    graph0518.groupBy('Category').agg(round(F.mean('Views'), 2), round(F.mean('Rate'), 2), round(F.mean('Ratings'), 2), round(F.mean('Comments'), 2), F.count('Category')).where(graph0518.Category != 'null').show()
+    print("Graph of relevant data averages:")
+    graph0518_avgs = ytUnion.select('Category', 'Views', 'Rate', 'Ratings', 'Comments')
+    graph0518_avgs.groupBy('Category').agg(round(F.mean('Views'), 2), round(F.mean('Rate'), 2), round(F.mean('Ratings'), 2), round(F.mean('Comments'), 2), F.count('Category')).where(graph0518_avgs.Category != 'null').sort(col('count(Category)').desc()).show()
 
-    #graph0518 = graph0518.groupBy('Category')
-    #graph0518.avg('Views')#.agg('Rate').agg('Ratings').agg('Comments')
+    ############################################
+    # Count per category
+    ############################################
 
-    #graph0518.show(10)
+    print("Graph of count per category:")
+    graph0518_cnt = ytUnion.select('Category')
+    graph0518_cnt.groupBy('Category').count().where(graph0518_cnt.Category != 'null').sort(col('count').desc()).show()
+
+    ############################################
+    # Average viewership
+    ############################################
+
+    print("Graph of average viewship:")
+    graph0518_vws = ytUnion.select('Category', 'Views')
+    graph0518_vws.groupBy('Category').agg(round(F.mean('Views'), 2), F.count('Category')).where(graph0518_vws.Category != 'null').sort(col('round(avg(Views), 2)').desc()).show()
+
+    ############################################
+    # Top twenty based on views
+    ############################################
+
+    # NOT PRINTING THE NUMBER OF VIEWS CORRECTLY
+    
+    #print("Graph of top 20 videos by view count:")
+    #graph0518_top = ytUnion.select('Category', 'Views', 'Rate', 'Ratings', 'Comments')
+    #graph0518_top.sort(F.desc('Views')).show()
+
+    ############################################
+    # Bottom twenty based on views
+    ############################################
+
+    print("Graph of bottom 40 videos by view count:")
+    graph0518_bot = ytUnion.select('Category', 'Views', 'Rate', 'Ratings', 'Comments')
+    graph0518_bot.where(graph0518_bot.Category != 'null').orderBy(F.asc('Views')).show(40)
+
 
 if __name__ == "__main__":
     main()
