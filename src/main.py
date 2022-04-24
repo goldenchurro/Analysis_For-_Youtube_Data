@@ -48,7 +48,7 @@ def main():
 
     graph0518 = ytUnion.select('Category', 'Views', 'Rate', 'Ratings', 'Comments')
 
-    graph0518.groupBy('Category').agg(round(F.mean('Views'), 2), round(F.mean('Rate'), 2), round(F.mean('Ratings'), 2), round(F.mean('Comments'), 2), F.count('Category')).show()
+    graph0518.groupBy('Category').agg(round(F.mean('Views'), 2), round(F.mean('Rate'), 2), round(F.mean('Ratings'), 2), round(F.mean('Comments'), 2), F.count('Category')).where(graph0518.Category != 'null').show()
 
     #graph0518 = graph0518.groupBy('Category')
     #graph0518.avg('Views')#.agg('Rate').agg('Ratings').agg('Comments')
