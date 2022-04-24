@@ -26,17 +26,17 @@ def main():
     # Read in text files
     ############################################
 
-    #yt0518_0 = pySparkSes.read.csv("/home/clint/src/0518/0.txt", sep = "\t")
-    #yt0518_1 = pySparkSes.read.csv("/home/clint/src/0518/1.txt", sep = "\t")
-    #yt0518_2 = pySparkSes.read.csv("/home/clint/src/0518/2.txt", sep = "\t")
-    #t0518_3 = pySparkSes.read.csv("/home/clint/src/0518/3.txt", sep = "\t")
+    #yt0518_0 = pySparkSes.read.csv("/src/0518/0.txt", sep = "\t")
+    #yt0518_1 = pySparkSes.read.csv("/src/0518/1.txt", sep = "\t")
+    #yt0518_2 = pySparkSes.read.csv("/src/0518/2.txt", sep = "\t")
+    #yt0518_3 = pySparkSes.read.csv("/src/0518/3.txt", sep = "\t")
 
     ####  Have one set or the other commented out  ####
 
-    yt0518_0 = pySparkSes.read.csv("/home/clint/src/080518/0.txt", sep = "\t")
-    yt0518_1 = pySparkSes.read.csv("/home/clint/src/080518/1.txt", sep = "\t")
-    yt0518_2 = pySparkSes.read.csv("/home/clint/src/080518/2.txt", sep = "\t")
-    yt0518_3 = pySparkSes.read.csv("/home/clint/src/080518/3.txt", sep = "\t")
+    yt0518_0 = pySparkSes.read.csv("/src/080518/0.txt", sep = "\t")
+    yt0518_1 = pySparkSes.read.csv("/src/080518/1.txt", sep = "\t")
+    yt0518_2 = pySparkSes.read.csv("/src/080518/2.txt", sep = "\t")
+    yt0518_3 = pySparkSes.read.csv("/src/080518/3.txt", sep = "\t")
 
     ############################################
     # Rename Columns
