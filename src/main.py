@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, avg
+from pyspark.sql.functions import col, avg, round
+from pyspark.sql import functions as F
 import pyspark
 import pandas as pd
 
@@ -25,9 +26,12 @@ def main():
 
     graph0518 = yt0518_0.select('Category', 'Views', 'Rate', 'Ratings', 'Comments')
 
-    #graph0518 = graph0518.groupBy('Category')#.agg('Views').agg('Rate').agg('Ratings').agg('Comments')
+    graph0518.groupBy('Category').agg(round(F.mean('Views'), 2), round(F.mean('Rate'), 2), round(F.mean('Ratings'), 2), round(F.mean('Comments'), 2), F.count('Category')).show()
 
-    graph0518.show(10)
+    #graph0518 = graph0518.groupBy('Category')
+    #graph0518.avg('Views')#.agg('Rate').agg('Ratings').agg('Comments')
+
+    #graph0518.show(10)
 
 if __name__ == "__main__":
     main()
