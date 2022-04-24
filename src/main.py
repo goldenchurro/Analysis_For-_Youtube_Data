@@ -2,6 +2,7 @@
 
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, avg, round
+from pyspark.sql.types  import IntegerType
 from pyspark.sql import functions as F
 import pyspark
 import pandas as pd
@@ -25,17 +26,17 @@ def main():
     # Read in text files
     ############################################
 
-    yt0518_0 = pySparkSes.read.csv("src/0518/0.txt", sep = "\t")
-    yt0518_1 = pySparkSes.read.csv("src/0518/1.txt", sep = "\t")
-    yt0518_2 = pySparkSes.read.csv("src/0518/2.txt", sep = "\t")
-    yt0518_3 = pySparkSes.read.csv("src/0518/3.txt", sep = "\t")
+    #yt0518_0 = pySparkSes.read.csv("/home/clint/src/0518/0.txt", sep = "\t")
+    #yt0518_1 = pySparkSes.read.csv("/home/clint/src/0518/1.txt", sep = "\t")
+    #yt0518_2 = pySparkSes.read.csv("/home/clint/src/0518/2.txt", sep = "\t")
+    #t0518_3 = pySparkSes.read.csv("/home/clint/src/0518/3.txt", sep = "\t")
 
     ####  Have one set or the other commented out  ####
 
-    #yt0518_0 = pySparkSes.read.csv("src/080518/0.txt", sep = "\t")
-    #yt0518_1 = pySparkSes.read.csv("src/080518/1.txt", sep = "\t")
-    #yt0518_2 = pySparkSes.read.csv("src/080518/2.txt", sep = "\t")
-    #yt0518_3 = pySparkSes.read.csv("src/080518/3.txt", sep = "\t")
+    yt0518_0 = pySparkSes.read.csv("/home/clint/src/080518/0.txt", sep = "\t")
+    yt0518_1 = pySparkSes.read.csv("/home/clint/src/080518/1.txt", sep = "\t")
+    yt0518_2 = pySparkSes.read.csv("/home/clint/src/080518/2.txt", sep = "\t")
+    yt0518_3 = pySparkSes.read.csv("/home/clint/src/080518/3.txt", sep = "\t")
 
     ############################################
     # Rename Columns
@@ -105,17 +106,19 @@ def main():
 
     # NOT PRINTING THE NUMBER OF VIEWS CORRECTLY
     
-    #print("Graph of top 20 videos by view count:")
-    #graph0518_top = ytUnion.select('Category', 'Views', 'Rate', 'Ratings', 'Comments')
-    #graph0518_top.sort(F.desc('Views')).show()
+    print("Graph of top 20 videos by view count:")
+    graph0518_top = ytUnion.select('Category', 'Views', 'Rate', 'Ratings', 'Comments')
+    graph0518_top = graph0518_top.withColumn("Views", graph0518_top["Views"].cast(IntegerType()))
+    graph0518_top.orderBy(col("Views").desc()).show(40)
+
 
     ############################################
     # Bottom twenty based on views
     ############################################
 
-    print("Graph of bottom 40 videos by view count:")
-    graph0518_bot = ytUnion.select('Category', 'Views', 'Rate', 'Ratings', 'Comments')
-    graph0518_bot.where(graph0518_bot.Category != 'null').orderBy(F.asc('Views')).show(40)
+    #print("Graph of bottom 40 videos by view count:")
+    #graph0518_bot = ytUnion.select('Category', 'Views', 'Rate', 'Ratings', 'Comments')
+    #graph0518_bot.where(graph0518_bot.Category != 'null').orderBy(F.asc('Views')).show(40)
 
 
 if __name__ == "__main__":
